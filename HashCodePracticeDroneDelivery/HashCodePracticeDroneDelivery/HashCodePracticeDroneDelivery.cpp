@@ -6,6 +6,8 @@
 
 int main()
 {
+	//Mihai e urecheat!!
+	//Mihai e flamangios...
     return 0;
 }
 
