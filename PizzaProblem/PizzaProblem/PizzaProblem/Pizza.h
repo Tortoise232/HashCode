@@ -14,8 +14,8 @@ public:
 		return this->min;
 	}
 
-	Pizza(std::string filename);
+	Pizza(char* filename);
 	~Pizza();
-	void readPizza(std::string name);
+	//void readPizza(char* name);
 };
 

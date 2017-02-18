@@ -2,11 +2,13 @@
 //
 
 #include "stdafx.h"
-
+#include "Pizza.h"
 
 
 int main()
 {
+	Pizza myPizza("example.in");
+	
     return 0;
 }
 
