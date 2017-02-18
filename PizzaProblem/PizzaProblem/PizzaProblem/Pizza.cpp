@@ -7,7 +7,7 @@
 Pizza::Pizza(char* name)
 {   //initializes a pizza
 	std::ifstream myFile;
-	myFile.open(name, 'r');
+	myFile.open(name, std::ios::binary);
 	int rows, columns, min, max;
 	myFile >> rows >> columns >> min >> max;
 	this->surface = new int*[rows];
@@ -18,9 +18,7 @@ Pizza::Pizza(char* name)
 	for (int ct = 0; ct < rows; ct++) {
 		for (int ct1 = 0; ct1 < columns; ct1++)
 		{
-			topping = '-';
-			while (topping != 'T' && topping != 'M')
-				myFile >> topping;
+			
 			myFile >> topping;
 			if (topping == 'M') {
 				this->surface[ct][ct1] = 0;
