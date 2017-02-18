@@ -10,6 +10,8 @@ Pizza::Pizza(char* name)
 	myFile.open(name, std::ios::binary);
 	int rows, columns, min, max;
 	myFile >> rows >> columns >> min >> max;
+	std::cout << "MINIMUM DE INGREDIENTE: " << min << "\n";
+	std::cout << "SLICE MAXIM: " << max << "\n";
 	this->surface = new int*[rows];
 	for (int ct = 0; ct < rows; ct++) {
 		this->surface[ct] = new int[columns];
