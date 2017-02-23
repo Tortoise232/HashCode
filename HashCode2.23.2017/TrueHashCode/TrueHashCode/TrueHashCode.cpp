@@ -61,6 +61,7 @@ public:
 		this->id = id;
 		this->currentSize = maxSize;
 	}
+
 };
 
 //videos are just ints;
@@ -177,16 +178,54 @@ void fillCaches() {
 	}
 }
 
+void writeFile() {
+	/*
+	std::vector<Cache> newCaches;
+	for (auto cash : caches) {
+		if (cash.actualVideos.size() > 0)
+			newCaches.push_back(cash);
+	}
+	std::ofstream dataOut("me_at_the_zoo.out", std::ios::out);
+	dataOut << newCaches.size() << "\n";
+	for (auto cash : newCaches) {
+		dataOut << cash.id << " ";
+		for (auto vid : cash.actualVideos)
+			dataOut << vid.id << " ";
+		dataOut << "\n";
+	}
+	dataOut.close();
+	*/
+
+	std::vector<Cache> newCaches;
+	for (auto cash : caches) {
+		if (cash.actualVideos.size() > 0)
+			newCaches.push_back(cash);
+	}
+	std::ofstream dataOut("me.out", std::ios::out);
+	dataOut << newCaches.size() << "\n";
+	for (auto cash : newCaches) {
+		dataOut << cash.id << " ";
+		for (auto vid : cash.actualVideos)
+			dataOut << vid.id << " ";
+		dataOut << "\n";
+	}
+	dataOut.flush();
+	dataOut.close();
+}
+
+
+
 int main()
 {
 
-	readData("me_at_the_zoo.in");
+	readData("trending_today.in");
 	std::cout << videos.size() << "\n";
 	std::cout << endpoints.size() << "\n";
 	std::cout << requests.size() << "\n";
 	std::cout << caches.size() << "\n";
 	addToPrQueue();
 	fillCaches();
+	writeFile();
     return 0;
 }
 
