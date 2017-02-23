@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 
+int videoValues[1000000] = { 0 };
+float cacheValues[1000000] = { 0 };
+
 
 class Video {
 public:
@@ -75,6 +78,7 @@ void readData(char* filename) {
 	data >> V >> E >> R >> C >> Csize;
 	
 
+
 	//read videos
 	for (int ct = 0; ct < V; ct++) {
 		data >> videoSize;
@@ -93,6 +97,7 @@ void readData(char* filename) {
 		for (int ct2 = 0; ct2 < nrOfConnections; ct2++) {
 			data >> cacheNr >> cacheLatency;
 			tempPairs.push_back(*(new std::pair<int, int>(cacheNr, cacheLatency)));
+			cacheValues[cacheNr] += 1 / cacheLatency;
 		}
 		endpoints.push_back(*(new Endpoint(latencyToServer, tempPairs, ct)));
 	}
@@ -101,6 +106,7 @@ void readData(char* filename) {
 	int videoID, endpointID, value;
 	for (int ct = 0; ct < R; ct++) {
 		data >> videoID >> endpointID >> value;
+		videoValues[videoID] += value;
 		requests.push_back(*(new Request(videoID, endpointID, value)));
 
 	}
@@ -116,7 +122,7 @@ int main()
 	std::cout << endpoints.size() << "\n";
 	std::cout << requests.size() << "\n";
 	std::cout << caches.size() << "\n";
-	//Mihai e paros!
+	for(int i = 0; i < 100000; i ++)
 
     return 0;
 }
