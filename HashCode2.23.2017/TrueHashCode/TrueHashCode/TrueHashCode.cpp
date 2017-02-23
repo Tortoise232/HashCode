@@ -54,11 +54,13 @@ public:
 
 class Cache {
 public:
-	static int maxSize;
 	int currentSize;
 	int id;
 	std::vector<Video> actualVideos;
-	
+	Cache(int id, int maxSize) {
+		this->id = id;
+		this->currentSize = maxSize;
+	}
 };
 
 //videos are just ints;
@@ -115,36 +117,42 @@ void readData(char* filename) {
 	
 
 }
+//auto cmpVideos = [](const int&a, const int& b) { return videoValues[a] > videoValues[b]; };
+//auto cmpCache = [](const int&a, const int& b) { return cacheValues[a] > cacheValues[b]; };
+
 bool cmpVideos(int i1, int i2) {
 	if (videoValues[i1] > videoValues[i2])
 		return 1;
 	return 0;
 }
+
 bool cmpCache(int i1, int i2) {
 	if (cacheValues[i1] > cacheValues[i2])
 		return 1;
 	return 0;
 }
-std::priority_queue<int, std::vector<int>, decltype(&cmpVideos) > prQueueVideos;
-std::priority_queue<int, std::vector<int>, decltype(&cmpCache) > prQueueCache;
+
+std::priority_queue<int, std::vector<int>, decltype(&cmpVideos) > prQueueVideos(cmpVideos);
+std::priority_queue<int, std::vector<int>, decltype(&cmpCache) > prQueueCache(cmpCache);
 
 
 
 void addToPrQueue() {
+	
 	for (int i = 0; i < V; i++) {
 		prQueueVideos.push(i);
 	}
 	for (int i = 0; i < C; i++) {
 		prQueueCache.push(i);
-		caches.push_back(*(new Cache()));
+		caches.push_back(*(new Cache(i, Csize)));
 	}
 	
 }
 
 void fillCaches() {
-	
-	int cacheID;
-	
+
+
+	std::priority_queue<int, std::vector<int>, decltype(&cmpCache) > prQueueCacheR;
 	std::vector<Video>::iterator it;
 	while (prQueueVideos.size() != 0) {
 		//ia primul video
@@ -152,17 +160,21 @@ void fillCaches() {
 		for (auto vid : videos)
 			if (videoID == vid.id) {
 				//gaseste toate cachurile care au loc
-				for (auto cach : caches)
-					if (cach.currentSize > vid.size) {
-						cach.actualVideos.push_back(vid);
-						cach.currentSize - vid.size;
-						//pune video
-					}
-				
+				prQueueCacheR = prQueueCache;
+				while (prQueueCacheR.size() > 0) {
+					int cacheID = prQueueCacheR.top();
+					for (Cache& cach : caches)
+						if (cach.currentSize > vid.size && cach.id == cacheID) {
+							cach.actualVideos.push_back(vid);
+							cach.currentSize -= vid.size;
+							//pune video
+						}
+					prQueueCacheR.pop();
+				}
+				prQueueVideos.pop();//gaseste urmatorul video 
 			}
-		prQueueVideos.pop();//gaseste urmatorul video 
+
 	}
-			
 }
 
 int main()
@@ -173,8 +185,8 @@ int main()
 	std::cout << endpoints.size() << "\n";
 	std::cout << requests.size() << "\n";
 	std::cout << caches.size() << "\n";
-	for(int i = 0; i < 100000; i ++)
-
+	addToPrQueue();
+	fillCaches();
     return 0;
 }
 
