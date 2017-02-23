@@ -56,8 +56,9 @@ class Cache {
 public:
 	static int maxSize;
 	int currentSize;
+	int id;
 	std::vector<Video> actualVideos;
-
+	
 };
 
 //videos are just ints;
@@ -135,7 +136,9 @@ void addToPrQueue() {
 	}
 	for (int i = 0; i < C; i++) {
 		prQueueCache.push(i);
+		caches.push_back(*(new Cache()));
 	}
+	
 }
 
 void fillCaches() {
@@ -155,8 +158,9 @@ void fillCaches() {
 						cach.currentSize - vid.size;
 						//pune video
 					}
-				prQueueVideos.pop();
+				
 			}
+		prQueueVideos.pop();//gaseste urmatorul video 
 	}
 			
 }
