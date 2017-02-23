@@ -6,9 +6,11 @@
 #include <map>
 #include <fstream>
 #include <iostream>
+#include <queue>
 
 int videoValues[1000000] = { 0 };
 float cacheValues[1000000] = { 0 };
+int V, E, R, C, Csize;
 
 
 class Video {
@@ -72,7 +74,6 @@ std::vector <Endpoint> endpoints;
 
 void readData(char* filename) {
 	std::ifstream data(filename, std::ios::binary);
-	int V, E, R, C, Csize;
 	int videoSize;
 	//reads nr of videos, nr of endpoints, nr of requests, nr of caches, max cache size in this order
 	data >> V >> E >> R >> C >> Csize;
@@ -113,7 +114,26 @@ void readData(char* filename) {
 	
 
 }
-
+bool cmpVideos(int i1, int i2) {
+	if (videoValues[i1] > videoValues[i2])
+		return 1;
+	return 0;
+}
+bool cmpCache(int i1, int i2) {
+	if (cacheValues[i1] > cacheValues[i2])
+		return 1;
+	return 0;
+}
+std::priority_queue<int, std::vector<int>, decltype(&cmpVideos) > prQueueVideos;
+std::priority_queue<int, std::vector<int>, decltype(&cmpCache) > prQueueCache;
+void addToPrQueue() {
+	for (int i = 0; i < V; i++) {
+		prQueueVideos.push(i);
+	}
+	for (int i = 0; i < C; i++) {
+		prQueueCache.push(i);
+	}
+}
 int main()
 {
 
