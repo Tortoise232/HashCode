@@ -126,6 +126,9 @@ bool cmpCache(int i1, int i2) {
 }
 std::priority_queue<int, std::vector<int>, decltype(&cmpVideos) > prQueueVideos;
 std::priority_queue<int, std::vector<int>, decltype(&cmpCache) > prQueueCache;
+
+
+
 void addToPrQueue() {
 	for (int i = 0; i < V; i++) {
 		prQueueVideos.push(i);
@@ -134,6 +137,30 @@ void addToPrQueue() {
 		prQueueCache.push(i);
 	}
 }
+
+void fillCaches() {
+	
+	int cacheID;
+	
+	std::vector<Video>::iterator it;
+	while (prQueueVideos.size() != 0) {
+		//ia primul video
+		int videoID = prQueueVideos.top();
+		for (auto vid : videos)
+			if (videoID == vid.id) {
+				//gaseste toate cachurile care au loc
+				for (auto cach : caches)
+					if (cach.currentSize > vid.size) {
+						cach.actualVideos.push_back(vid);
+						cach.currentSize - vid.size;
+						//pune video
+					}
+				prQueueVideos.pop();
+			}
+	}
+			
+}
+
 int main()
 {
 
