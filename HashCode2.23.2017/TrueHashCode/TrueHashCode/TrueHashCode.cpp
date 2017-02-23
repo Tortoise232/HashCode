@@ -23,24 +23,35 @@ public:
 	std::vector<Video> videos;
 	int dataCenterLatency;
 	// pair pentru ca fata de fiecare 
-	//cache este un anumit latency   std::pair<cache,latency>
-	std::vector<std::pair<int, Cache&>> cacheLatencies; 
+	//cache este un anumit latency   std::pair<cacheID,latency>
+	std::vector<std::pair<int, int>> cacheLatencies; 
 	Endpoint(std::vector<int> videoRequests, int dataCenterLatency) {
 
 	}
 };
 
-//videos are just ints;
-//caches;
-
 class Cache {
 public:
 	static int maxSize;
+	int currentSize;
+	std::vector<Video> actualVideos;
 };
+
+//videos are just ints;
+//caches;
+
+std::vector<Video> videos;
+std::vector<Cache> caches;
+std::vector<Requests> requests;
+
+void readData(char* filename) {
+	std::ifstream
+}
 
 int main()
 {
 
+	
 	//Mihai e paros!
     return 0;
 }
